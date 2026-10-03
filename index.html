@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Surpbiz · From Supply to Delivery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#FFFFFF;--bg-alt:#FAFAFA;--bg-deep:#F2F2F2;
+      --ink:#0A0A0A;--ink-soft:#6B6B6B;--ink-faint:#A0A0A0;
+      --line:#E5E5E5;--line-soft:#F0F0F0;--accent:#A53322;
+      --sans:'Geist','Noto Sans SC',system-ui,sans-serif;
+      --mono:'Geist Mono','Noto Sans SC',monospace;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;letter-spacing:-0.005em;}
+
+    header{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2.5rem;background:rgba(255,255,255,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--line);}
+    .header-inner{display:flex;align-items:center;justify-content:space-between;max-width:1600px;margin:0 auto;}
+    .logo-img{height:34px;width:auto;display:block;}
+    .logo-fallback{font-family:var(--sans);font-size:1.0625rem;font-weight:600;letter-spacing:-0.03em;color:var(--ink);display:none;}
+    .logo-fallback::after{content:'.';color:var(--accent);}
+    nav ul{display:flex;gap:2rem;list-style:none;font-size:0.8125rem;font-weight:500;}
+    nav a{color:var(--ink);text-decoration:none;transition:color 0.2s;}
+    nav a:hover{color:var(--accent);}
+    .lang-switcher{display:flex;gap:0.125rem;font-family:var(--mono);font-size:0.6875rem;letter-spacing:0.05em;}
+    .lang-switcher button{background:none;border:none;cursor:pointer;color:var(--ink-faint);padding:0.25rem 0.5rem;transition:color 0.2s;font-family:var(--mono);font-size:0.6875rem;letter-spacing:0.05em;}
+    .lang-switcher button.active{color:var(--accent);font-weight:500;}
+    .lang-switcher button:hover{color:var(--ink);}
+
+    .hero{min-height:100vh;padding:10rem 2.5rem 4rem;display:grid;grid-template-columns:1.4fr 1fr;gap:6rem;align-items:center;max-width:1600px;margin:0 auto;position:relative;}
+    .hero-text{position:relative;z-index:2;}
+    .eyebrow{font-family:var(--mono);font-size:0.6875rem;letter-spacing:0.15em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:3rem;display:flex;align-items:center;gap:0.75rem;}
+    .eyebrow .dot{width:6px;height:6px;background:var(--accent);border-radius:50%;flex-shrink:0;}
+    h1{font-family:var(--sans);font-size:clamp(3rem,7vw,6.5rem);font-weight:600;line-height:0.95;letter-spacing:-0.045em;margin-bottom:3rem;color:var(--ink);}
+    h1 .accent{color:var(--accent);}
+    .hero-sub{font-size:1.0625rem;color:var(--ink-soft);max-width:30rem;margin-bottom:3rem;line-height:1.55;font-weight:400;}
+    .cta-row{display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;}
+    .btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.9rem 1.5rem;background:var(--ink);color:var(--bg);border:1px solid var(--ink);cursor:pointer;font-family:var(--sans);font-size:0.8125rem;font-weight:500;letter-spacing:-0.005em;text-decoration:none;transition:all 0.2s ease;}
+    .btn:hover{background:var(--accent);border-color:var(--accent);}
+    .btn-secondary{color:var(--ink);background:transparent;border-color:var(--line);}
+    .btn-secondary:hover{background:transparent;color:var(--accent);border-color:var(--accent);}
+    .clock-container{position:relative;display:flex;align-items:center;justify-content:center;}
+    .clock-svg{width:100%;max-width:420px;height:auto;}
+
+    .trust-strip{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;padding-top:3rem;margin-top:2rem;border-top:1px solid var(--line);}
+    .trust-strip .stat{display:flex;flex-direction:column;gap:0.5rem;}
+    .trust-strip .num{font-family:var(--sans);font-size:2.25rem;font-weight:500;color:var(--ink);line-height:1;letter-spacing:-0.035em;}
+    .trust-strip .num sup{font-size:0.875rem;color:var(--ink-soft);vertical-align:super;font-weight:400;}
+    .trust-strip .label{font-family:var(--mono);font-size:0.6875rem;letter-spacing:0.1em;color:var(--ink-soft);text-transform:uppercase;margin-top:0.5rem;}
+
+    section{padding:9rem 2.5rem;max-width:1600px;margin:0 auto;}
+    .section-header{margin-bottom:5rem;max-width:56rem;}
+    .section-eyebrow{font-family:var(--mono);font-size:0.6875rem;letter-spacing:0.15em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:2rem;display:flex;align-items:center;gap:0.75rem;}
+    .section-eyebrow::before{content:'';width:6px;height:6px;background:var(--accent);border-radius:50%;flex-shrink:0;}
+    h2{font-family:var(--sans);font-size:clamp(2.25rem,4.5vw,4rem);font-weight:600;line-height:1;letter-spacing:-0.04em;margin-bottom:1.5rem;}
+    h2 .accent{color:var(--accent);}
+    .section-sub{font-size:1.0625rem;color:var(--ink-soft);max-width:42rem;line-height:1.55;}
+
+    /* INDUSTRY SHOWCASE */
+    .industry-showcase{display:grid;grid-template-columns:repeat(3,1fr);max-width:none;padding:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+    .showcase-panel{position:relative;height:56vh;min-height:360px;background-size:cover;background-position:center;overflow:hidden;cursor:pointer;}
+    .showcase-panel:not(:last-child){border-right:1px solid rgba(255,255,255,0.08);}
+    .showcase-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,0.84) 0%,rgba(10,10,10,0.38) 55%,rgba(10,10,10,0.08) 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:3rem;transition:background 0.4s ease;}
+    .showcase-panel:hover .showcase-overlay{background:linear-gradient(to top,rgba(165,51,34,0.9) 0%,rgba(165,51,34,0.52) 55%,rgba(10,10,10,0.12) 100%);}
+    .showcase-tag{font-family:var(--mono);font-size:0.625rem;letter-spacing:0.2em;color:rgba(255,255,255,0.55);text-transform:uppercase;margin-bottom:0.875rem;}
+    .showcase-title{font-family:var(--sans);font-size:clamp(1.5rem,2.2vw,2rem);font-weight:600;color:#fff;letter-spacing:-0.03em;line-height:1.05;margin-bottom:0.75rem;}
+    .showcase-desc{font-size:0.875rem;color:rgba(255,255,255,0.72);line-height:1.55;max-width:22rem;}
+
+    /* LIFECYCLE */
+    .lifecycle{background:var(--bg-alt);max-width:none;padding:9rem 2.5rem;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+    .lifecycle-inner{max-width:1600px;margin:0 auto;display:grid;grid-template-columns:0.85fr 1fr;gap:6rem;align-items:center;}
+    .stage-detail{display:none;min-height:360px;}
+    .stage-detail.active{display:block;animation:fadeIn 0.3s ease;}
+    @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+    .stage-number{font-family:var(--mono);font-size:0.6875rem;letter-spacing:0.15em;color:var(--accent);margin-bottom:2rem;text-transform:uppercase;}
+    .stage-title{font-family:var(--sans);font-size:clamp(2.25rem,3.5vw,3.25rem);font-weight:600;line-height:1;letter-spacing:-0.035em;margin-bottom:1.5rem;}
+    .stage-title .accent{color:var(--accent);}
+    .stage-desc{font-size:1rem;color:var(--ink-soft);margin-bottom:2.5rem;max-width:34rem;line-height:1.55;}
+    .stage-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:0;max-width:40rem;border-top:1px solid var(--line);}
+    .stage-list li{padding:0.875rem 0;font-size:0.875rem;color:var(--ink);font-weight:400;border-bottom:1px solid var(--line);letter-spacing:-0.005em;}
+    .stage-list li:nth-child(odd){padding-right:1rem;}
+    .stage-list li:nth-child(even){padding-left:1rem;border-left:1px solid var(--line);}
+
+    /* PRODUCTS */
+    .products-section{background:var(--bg);max-width:none;padding:9rem 2.5rem;border-bottom:1px solid var(--line);}
+    .products-inner{max-width:1600px;margin:0 auto;}
+    .product-tabs{display:flex;border-bottom:1px solid var(--line);margin-bottom:4rem;margin-top:3rem;}
+    .product-tab{font-family:var(--mono);font-size:0.6875rem;letter-spacing:0.12em;text-transform:uppercase;padding:1rem 2rem;cursor:pointer;border:none;background:none;color:var(--ink-soft);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.2s;font-weight:500;}
+    .product-tab:hover{color:var(--ink);}
+    .product-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+    .product-panel{display:none;}
+    .product-panel.active{display:block;animation:fadeIn 0.3s ease;}
+    .product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line);}
+    .product-card{padding:2.5rem 2rem 3rem;border-right:1px solid var(--line);border-bottom:1px solid var(--line);transition:background 0.2s;}
+    .product-card:nth-child(3n){border-right:none;}
+    .product-card:hover{background:var(--bg-alt);}
+    .product-cat{font-family:var(--mono);font-size:0.625rem;letter-spacing:0.15em;color:var(--accent);text-transform:uppercase;margin-bottom:1.25rem;}
+    .product-name{font-family:var(--sans);font-size:1.0625rem;font-weight:600;letter-spacing:-0.02em;margin-bottom:1.25rem;line-height:1.25;}
+    .spec-table{width:100%;border-collapse:collapse;}
+    .spec-table tr{border-bottom:1px solid var(--line-soft);}
+    .spec-table tr:last-child{border-bottom:none;}
+    .spec-table td{padding:0.45rem 0;font-size:0.8125rem;line-height:1.4;vertical-align:top;}
+    .spec-table td:first-child{font-family:var(--mono);font-size:0.65rem;letter-spacing:0.05em;color:var(--ink-faint);text-transform:uppercase;padding-right:1.25rem;width:38%;font-weight:400;white-space:nowrap;}
+    .product-note{font-size:0.8125rem;color:var(--ink-soft);margin-top:1rem;line-height:1.5;border-top:1px solid var(--line-soft);padding-top:1rem;}
+
+    /* PILLARS */
+    .pillars-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line);}
+    .pillar{padding:3.5rem 2rem 4rem;border-right:1px solid var(--line);border-bottom:1px solid var(--line);transition:background 0.25s;cursor:pointer;}
+    .pillar:last-child{border-right:none;}
+    .pillar:hover{background:var(--bg-alt);}
+    .pillar:hover .pillar-num{color:var(--accent);}
+    .pillar-num{font-family:var(--mono);font-size:0.6875rem;letter-spacing:0.15em;color:var(--ink-faint);margin-bottom:3rem;transition:color 0.25s;}
+    .pillar-title{font-family:var(--sans);font-size:1.625rem;font-weight:600;line-height:1.05;margin-bottom:1.25rem;letter-spacing:-0.03em;}
+    .pillar-desc{font-size:0.9375rem;color:var(--ink-soft);line-height:1.55;}
+
+    /* MAP */
+    .map-section{max-width:1600px;margin:0 auto;padding:9rem 2.5rem;}
+    .map-wrapper{position:relative;margin-top:4rem;aspect-ratio:2.4/1;}
+    .world-map{width:100%;height:100%;display:block;}
+    .map-grid line{stroke:var(--line-soft);stroke-width:0.5;}
+    .map-grid line.equator,.map-grid line.meridian{stroke:var(--line);}
+    .map-label-axis{font-family:var(--mono);font-size:9px;fill:var(--ink-faint);letter-spacing:0.05em;}
+    .map-marker circle.dot{fill:var(--ink);}
+    .map-marker.active circle.dot{fill:var(--accent);}
+    .map-marker.active circle.ring{fill:none;stroke:var(--accent);stroke-width:0.75;}
+    .map-marker.hq circle.dot{fill:var(--ink);}
+    .map-marker.hq circle.ring{fill:none;stroke:var(--ink);stroke-width:0.75;}
+    .map-marker text{font-family:var(--mono);font-size:10px;fill:var(--ink);letter-spacing:0.05em;font-weight:500;}
+    .map-marker text.coord{font-size:8.5px;fill:var(--ink-faint);font-weight:400;}
+    .map-marker.dim circle.dot{fill:var(--ink-faint);}
+    .map-marker.dim text{fill:var(--ink-faint);}
+    .map-route{fill:none;stroke:var(--accent);stroke-width:0.5;stroke-dasharray:2 4;opacity:0.3;}
+    .map-legend{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:4rem;border-top:1px solid var(--line);}
+    .map-legend .item{padding:2rem 1.5rem 2rem 0;border-right:1px solid var(--line);font-size:0.875rem;line-height:1.55;color:var(--ink-soft);}
+    .map-legend .item:last-child{border-right:none;}
+    .map-legend .item:not(:first-child){padding-left:1.5rem;}
+    .map-legend .item .stage-tag{display:inline-block;margin-bottom:1rem;padding:0.2rem 0.6rem;font-family:var(--mono);font-size:0.625rem;letter-spacing:0.15em;color:var(--accent);border:1px solid var(--accent);text-transform:uppercase;font-weight:500;}
+    .map-legend .item strong{display:block;font-family:var(--sans);font-size:1.25rem;font-weight:600;color:var(--ink);margin-bottom:0.5rem;letter-spacing:-0.02em;}
+
+    /* NUMBERS */
+    .numbers-section{max-width:1600px;margin:0 auto;padding:0 2.5rem 9rem;}
+    .numbers-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+    .num-item{padding:3.5rem 2rem 3.5rem 0;border-right:1px solid var(--line);}
+    .num-item:last-child{border-right:none;padding-right:0;}
+    .num-item:not(:first-child){padding-left:2rem;}
+    .num-big{font-family:var(--sans);font-size:clamp(3.5rem,6vw,5rem);line-height:1;font-weight:500;letter-spacing:-0.05em;margin-bottom:1.5rem;color:var(--ink);}
+    .num-big sup{font-size:0.35em;color:var(--accent);vertical-align:super;font-weight:500;}
+    .num-label{font-family:var(--mono);font-size:0.6875rem;letter-spacing:0.1em;color:var(--ink-soft);text-transform:uppercase;}
+
+    /* CONTACT */
+    .footer-cta{background:var(--bg-alt);max-width:none;padding:9rem 2.5rem;border-top:1px solid var(--line);}
+    .footer-cta-inner{max-width:1600px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr;gap:5rem;}
+    .footer-cta h2{max-width:32rem;margin-bottom:2.5rem;}
+    .contact-block{display:flex;flex-direction:column;gap:1.75rem;}
+    .contact-label{font-family:var(--mono);font-size:0.625rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:0.4rem;}
+    .contact-link{font-family:var(--sans);font-size:1rem;font-weight:500;color:var(--ink);text-decoration:none;display:inline-flex;align-items:center;gap:0.625rem;padding-bottom:0.2rem;border-bottom:1px solid var(--line);transition:all 0.2s;letter-spacing:-0.01em;width:fit-content;}
+    .contact-link:hover{color:var(--accent);border-color:var(--accent);}
+    .contact-info{font-family:var(--sans);font-size:0.9375rem;line-height:1.7;color:var(--ink-soft);}
+    .contact-info strong{display:block;font-family:var(--mono);font-size:0.6875rem;margin-top:1.5rem;margin-bottom:0.5rem;color:var(--ink);letter-spacing:0.15em;text-transform:uppercase;font-weight:500;}
+    .contact-info strong:first-child{margin-top:0;}
+
+    footer{background:var(--bg);padding:2rem 2.5rem;border-top:1px solid var(--line);font-family:var(--mono);font-size:0.6875rem;color:var(--ink-soft);letter-spacing:0.02em;}
+    .footer-inner{max-width:1600px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+
+    .clock-pos{cursor:pointer;}
+    .clock-pos circle.dot{transition:r 0.25s ease,fill 0.25s ease;}
+    .clock-pos.active circle.dot{fill:var(--accent);}
+    .clock-pos:hover circle.dot{fill:var(--accent);}
+    .clock-pos text{font-family:var(--mono);font-size:10px;letter-spacing:0.12em;fill:var(--ink-soft);text-transform:uppercase;font-weight:500;transition:fill 0.25s;}
+    .clock-pos.active text{fill:var(--ink);}
+    .clock-pos:hover text{fill:var(--ink);}
+
+    .reveal{opacity:0;transition:opacity 0.6s ease;}
+    .reveal.in{opacity:1;}
+
+    @media(max-width:1100px){
+      .product-grid{grid-template-columns:repeat(2,1fr);}
+      .product-card:nth-child(3n){border-right:1px solid var(--line);}
+      .product-card:nth-child(2n){border-right:none;}
+    }
+    @media(max-width:960px){
+      .hero,.lifecycle-inner,.footer-cta-inner{grid-template-columns:1fr;gap:3rem;}
+      .hero{padding:7rem 1.5rem 4rem;}
+      section{padding:5rem 1.5rem;}
+      .lifecycle,.footer-cta,.products-section{padding:5rem 1.5rem;}
+      .map-section,.numbers-section{padding-left:1.5rem;padding-right:1.5rem;}
+      .numbers-section{padding-bottom:5rem;}
+      header{padding:0.875rem 1.5rem;}
+      .pillars-grid,.numbers-grid{grid-template-columns:repeat(2,1fr);}
+      .pillar:nth-child(2),.num-item:nth-child(2){border-right:none;}
+      .map-legend{grid-template-columns:1fr 1fr;}
+      .map-legend .item{border-right:none;padding:1.5rem 1rem 1.5rem 0;}
+      .map-legend .item:not(:first-child){padding-left:1rem;}
+      .map-legend .item:nth-child(odd){border-right:1px solid var(--line);}
+      .map-legend .item:nth-child(-n+2){border-bottom:1px solid var(--line);}
+      .trust-strip{grid-template-columns:1fr 1fr;}
+      nav ul{display:none;}
+      .stage-list{grid-template-columns:1fr;}
+      .stage-list li:nth-child(even){padding-left:0;border-left:none;}
+      .industry-showcase{grid-template-columns:1fr;}
+      .showcase-panel{height:46vw;min-height:260px;}
+      .showcase-panel:not(:last-child){border-right:none;border-bottom:1px solid rgba(255,255,255,0.08);}
+      .product-grid{grid-template-columns:1fr;}
+      .product-card:nth-child(n){border-right:none;}
+    }
+    @media(max-width:560px){
+      .pillars-grid,.numbers-grid,.map-legend,.trust-strip{grid-template-columns:1fr;}
+      .pillar,.num-item{border-right:none!important;border-bottom:1px solid var(--line);padding-left:0!important;padding-right:0!important;}
+      h1{font-size:2.75rem;}
+      .stage-title{font-size:2rem;}
+      .product-tab{padding:0.75rem 0.875rem;font-size:0.6rem;}
+    }
+
+    /* PRODUCT CARD IMAGES */
+    .product-card{display:flex;flex-direction:column;}
+    .product-img-wrap{width:100%;aspect-ratio:16/10;overflow:hidden;background:var(--bg-deep);margin-bottom:1.25rem;border-bottom:1px solid var(--line);}
+    .product-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform 0.4s ease;}
+    .product-card:hover .product-img-wrap img{transform:scale(1.05);}
+    .product-card .product-body{flex:1;display:flex;flex-direction:column;}
+    .product-detail-btn{margin-top:auto;padding-top:1rem;border-top:1px solid var(--line-soft);font-family:var(--mono);font-size:0.6875rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);cursor:pointer;background:none;border:none;align-self:flex-start;transition:opacity 0.2s;}
+    .product-detail-btn:hover{opacity:0.7;}
+
+    /* DETAIL OVERLAY (pseudo page) */
+    .detail-overlay{display:none;position:fixed;inset:0;z-index:200;background:var(--bg);overflow-y:auto;}
+    .detail-overlay.active{display:block;}
+    .detail-header{position:sticky;top:0;background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--line);padding:1rem 2.5rem;display:flex;align-items:center;justify-content:space-between;z-index:10;}
+    .detail-back{font-family:var(--mono);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink);cursor:pointer;background:none;border:none;display:flex;align-items:center;gap:0.5rem;transition:color 0.2s;}
+    .detail-back:hover{color:var(--accent);}
+    .detail-breadcrumb{font-family:var(--mono);font-size:0.625rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-faint);}
+    .detail-content{max-width:1200px;margin:0 auto;padding:3rem 2.5rem 6rem;}
+    .detail-hero-img{width:100%;aspect-ratio:16/9;object-fit:cover;margin-bottom:3rem;background:var(--bg-deep);}
+    .detail-cat{font-family:var(--mono);font-size:0.6875rem;letter-spacing:0.15em;color:var(--accent);text-transform:uppercase;margin-bottom:1rem;}
+    .detail-title{font-family:var(--sans);font-size:clamp(1.75rem,3.5vw,2.75rem);font-weight:600;line-height:1.05;letter-spacing:-0.035em;margin-bottom:1.5rem;}
+    .detail-desc{font-size:1.0625rem;color:var(--ink-soft);line-height:1.55;max-width:42rem;margin-bottom:3rem;}
+    .detail-specs-label{font-family:var(--mono);font-size:0.6875rem;letter-spacing:0.15em;color:var(--ink-faint);text-transform:uppercase;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--line);}
+    .detail-spec-table{width:100%;border-collapse:collapse;margin-bottom:3rem;}
+    .detail-spec-table tr{border-bottom:1px solid var(--line-soft);}
+    .detail-spec-table td{padding:0.875rem 0;font-size:0.9375rem;vertical-align:top;}
+    .detail-spec-table td:first-child{font-family:var(--mono);font-size:0.6875rem;letter-spacing:0.05em;color:var(--ink-faint);text-transform:uppercase;width:35%;font-weight:400;}
+    .detail-extra-img{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2rem;}
+    .detail-extra-img img{width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--bg-deep);}
+
+    @media(max-width:760px){
+      .detail-extra-img{grid-template-columns:1fr;}
+      .detail-content{padding:2rem 1.5rem 4rem;}
+      .detail-header{padding:0.875rem 1.5rem;}
+    }
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <img id="logo-img" src="data:image/png;base64,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" alt="Surpbiz" class="logo-img" onerror="this.style.display='none';document.getElementById('logo-fb').style.display='block'">
+      <span id="logo-fb" class="logo-fallback">Surpbiz</span>
+      <nav>
+        <ul>
+          <li><a href="#lifecycle" data-i18n="nav-lifecycle">Lifecycle</a></li>
+          <li><a href="#products" data-i18n="nav-products">Products</a></li>
+          <li><a href="#pillars" data-i18n="nav-capabilities">Capabilities</a></li>
+          <li><a href="#map" data-i18n="nav-presence">Presence</a></li>
+          <li><a href="#contact" data-i18n="nav-contact">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="lang-switcher">
+        <button class="active" data-lang="en">EN</button>
+        <button data-lang="zh">中</button>
+        <button data-lang="es">ES</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-text reveal">
+      <div class="eyebrow"><span class="dot"></span><span data-i18n="eyebrow-hero">Hong Kong · Equipment · Services · Trade · Est. 20+ years</span></div>
+      <h1><span data-i18n="hero-title-1">From Supply</span><br><span class="accent" data-i18n="hero-title-2">to Trade.</span></h1>
+      <p class="hero-sub" data-i18n="hero-sub">We connect equipment supply, technical services, and international trade — one partner across the full project lifecycle.</p>
+      <div class="cta-row">
+        <a href="#lifecycle" class="btn" data-i18n="cta-primary">See how we work</a>
+        <a href="#contact" class="btn btn-secondary" data-i18n="cta-secondary">Start a project</a>
+      </div>
+    </div>
+    <div class="clock-container reveal">
+      <svg class="clock-svg" viewBox="0 0 400 400" id="hero-clock">
+        <circle cx="200" cy="200" r="160" fill="none" stroke="#E5E5E5" stroke-width="1"/>
+        <g class="clock-pos active" data-stage="discover">
+          <circle class="dot" cx="200" cy="40" r="5"/>
+          <text x="200" y="22" text-anchor="middle" data-i18n="clock-discover">12 · SURVEY</text>
+        </g>
+        <g class="clock-pos" data-stage="operate">
+          <circle class="dot" cx="360" cy="200" r="4" fill="#0A0A0A"/>
+          <text x="360" y="184" text-anchor="middle" data-i18n="clock-operate">03 · EQUIP</text>
+        </g>
+        <g class="clock-pos" data-stage="support">
+          <circle class="dot" cx="200" cy="360" r="4" fill="#0A0A0A"/>
+          <text x="200" y="384" text-anchor="middle" data-i18n="clock-support">06 · SUPPORT</text>
+        </g>
+        <g class="clock-pos" data-stage="deliver">
+          <circle class="dot" cx="40" cy="200" r="4" fill="#0A0A0A"/>
+          <text x="40" y="184" text-anchor="middle" data-i18n="clock-deliver">09 · TRADE</text>
+        </g>
+        <text x="200" y="205" text-anchor="middle" font-family="Geist Mono,monospace" font-size="10" letter-spacing="1.5" fill="#6B6B6B" data-i18n="clock-center">ONE CYCLE</text>
+        <text x="200" y="222" text-anchor="middle" font-family="Geist Mono,monospace" font-size="9" letter-spacing="1.5" fill="#A0A0A0" data-i18n="clock-center-2">↺ 01 → 04</text>
+      </svg>
+    </div>
+    <div class="trust-strip reveal">
+      <div class="stat"><span class="num">30<sup>+</sup></span><span class="label" data-i18n="trust-countries">Countries delivered to</span></div>
+      <div class="stat"><span class="num">20<sup>YRS</sup></span><span class="label" data-i18n="trust-experience">Of cross-border trade</span></div>
+      <div class="stat"><span class="num">2</span><span class="label" data-i18n="trust-chains">Integrated value chains</span></div>
+      <div class="stat"><span class="num">4</span><span class="label" data-i18n="trust-stages">Stages, one partner</span></div>
+    </div>
+  </section>
+
+  <div class="industry-showcase reveal">
+    <div class="showcase-panel" style="background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1400&q=80&fit=crop');background-color:#1a1a1a;">
+      <div class="showcase-overlay">
+        <div class="showcase-tag" data-i18n="showcase-tag-1">03 · EQUIP</div>
+        <div class="showcase-title" data-i18n="showcase-title-1">Heavy Equipment</div>
+        <div class="showcase-desc" data-i18n="showcase-desc-1">Excavators, articulated dump trucks, drilling rigs and material-handling systems for heavy-duty construction and engineering operations across Latin America and Southeast Asia.</div>
+      </div>
+    </div>
+    <div class="showcase-panel" style="background-image:url('https://images.unsplash.com/photo-1572970388430-a7fff761e597?w=1400&q=80&fit=crop');background-color:#1a1a1a;">
+      <div class="showcase-overlay">
+        <div class="showcase-tag" data-i18n="showcase-tag-2">01 · DISCOVER</div>
+        <div class="showcase-title" data-i18n="showcase-title-2">Technical Survey Services</div>
+        <div class="showcase-desc" data-i18n="showcase-desc-2">Aerial geophysical surveys, remote sensing, geochemical sampling and data analysis — the foundational data that supports project planning and decision-making.</div>
+      </div>
+    </div>
+    <div class="showcase-panel" style="background-image:url('https://images.unsplash.com/photo-1494412519320-aa613dfb7738?w=1400&q=80&fit=crop');background-color:#1a1a1a;">
+      <div class="showcase-overlay">
+        <div class="showcase-tag" data-i18n="showcase-tag-3">09 · TRADE</div>
+        <div class="showcase-title" data-i18n="showcase-title-3">Logistics &amp; Trade</div>
+        <div class="showcase-desc" data-i18n="showcase-desc-3">International trade of industrial equipment and project materials — via major ports from Hong Kong to Laem Chabang, Haiphong and beyond.</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="lifecycle" id="lifecycle">
+    <div class="lifecycle-inner">
+      <div class="reveal">
+        <svg class="clock-svg" viewBox="0 0 400 400" id="detail-clock" style="max-width:380px;">
+          <circle cx="200" cy="200" r="160" fill="none" stroke="#E5E5E5" stroke-width="1"/>
+          <circle id="active-indicator" cx="200" cy="40" r="14" fill="none" stroke="#A53322" stroke-width="0.75" style="transition:cx 0.4s ease,cy 0.4s ease;"/>
+          <g class="clock-pos active" data-stage="discover"><circle class="dot" cx="200" cy="40" r="5"/><text x="200" y="22" text-anchor="middle" data-i18n="clock-discover">12 · SURVEY</text></g>
+          <g class="clock-pos" data-stage="operate"><circle class="dot" cx="360" cy="200" r="4" fill="#0A0A0A"/><text x="360" y="184" text-anchor="middle" data-i18n="clock-operate">03 · EQUIP</text></g>
+          <g class="clock-pos" data-stage="support"><circle class="dot" cx="200" cy="360" r="4" fill="#0A0A0A"/><text x="200" y="384" text-anchor="middle" data-i18n="clock-support">06 · SUPPORT</text></g>
+          <g class="clock-pos" data-stage="deliver"><circle class="dot" cx="40" cy="200" r="4" fill="#0A0A0A"/><text x="40" y="184" text-anchor="middle" data-i18n="clock-deliver">09 · TRADE</text></g>
+          <text x="200" y="195" text-anchor="middle" font-family="Geist Mono,monospace" font-size="9" letter-spacing="1.5" fill="#A0A0A0" data-i18n="click-prompt">CLICK A STAGE</text>
+          <text x="200" y="218" text-anchor="middle" font-family="Geist,sans-serif" font-size="20" font-weight="600" fill="#A53322" letter-spacing="-0.03em" id="active-stage-name">Discover</text>
+        </svg>
+      </div>
+      <div class="reveal">
+        <div class="section-eyebrow" data-i18n="lifecycle-eyebrow">The Lifecycle Model</div>
+        <h2><span data-i18n="lifecycle-title-1">A cycle, </span><span class="accent" data-i18n="lifecycle-title-2">not a transaction.</span></h2>
+        <div class="stage-detail active" data-stage="discover" style="margin-top:3rem;">
+          <div class="stage-number" data-i18n="stage-discover-num">12:00 · SURVEY</div>
+          <h3 class="stage-title" data-i18n="stage-discover-title">Map the ground.</h3>
+          <p class="stage-desc" data-i18n="stage-discover-desc">Before ground is broken, we map the terrain. Aerial geophysics, remote sensing, and geochemical surveys — the foundational data that supports project planning and decision-making.</p>
+          <ul class="stage-list">
+            <li data-i18n="stage-discover-1">Aerial geophysical surveys</li><li data-i18n="stage-discover-2">Remote sensing &amp; satellite data</li>
+            <li data-i18n="stage-discover-3">Geochemical sampling</li><li data-i18n="stage-discover-4">Resource estimation</li>
+            <li data-i18n="stage-discover-5">Terrain mapping</li><li data-i18n="stage-discover-6">Geological modeling</li>
+          </ul>
+        </div>
+        <div class="stage-detail" data-stage="operate" style="margin-top:3rem;">
+          <div class="stage-number" data-i18n="stage-operate-num">03:00 · EQUIP</div>
+          <h3 class="stage-title" data-i18n="stage-operate-title">Build and supply.</h3>
+          <p class="stage-desc" data-i18n="stage-operate-desc">We supply the heavy equipment and on-site services that turn project plans into productive operations — from excavation to material handling.</p>
+          <ul class="stage-list">
+            <li data-i18n="stage-operate-1">Heavy equipment supply</li><li data-i18n="stage-operate-2">Excavators &amp; dump trucks</li>
+            <li data-i18n="stage-operate-3">Drilling rigs &amp; accessories</li><li data-i18n="stage-operate-4">Crushing &amp; material handling</li>
+            <li data-i18n="stage-operate-5">Pumps, pipes &amp; fittings</li><li data-i18n="stage-operate-6">On-site technical services</li>
+          </ul>
+        </div>
+        <div class="stage-detail" data-stage="support" style="margin-top:3rem;">
+          <div class="stage-number" data-i18n="stage-support-num">06:00 · SUPPORT</div>
+          <h3 class="stage-title" data-i18n="stage-support-title">Keep it running.</h3>
+          <p class="stage-desc" data-i18n="stage-support-desc">Remote operations require reliable infrastructure — power, monitoring, mobility — that keeps projects productive across multi-year deployments.</p>
+          <ul class="stage-list">
+            <li data-i18n="stage-support-1">Temporary solar power</li><li data-i18n="stage-support-2">Mobile substations &amp; power supply</li>
+            <li data-i18n="stage-support-3">Drone &amp; remote monitoring</li><li data-i18n="stage-support-4">Equipment rental</li>
+            <li data-i18n="stage-support-5">Site security systems</li><li data-i18n="stage-support-6">Logistics &amp; camp setup</li>
+          </ul>
+        </div>
+        <div class="stage-detail" data-stage="deliver" style="margin-top:3rem;">
+          <div class="stage-number" data-i18n="stage-deliver-num">09:00 · TRADE</div>
+          <h3 class="stage-title" data-i18n="stage-deliver-title">Trade the world.</h3>
+          <p class="stage-desc" data-i18n="stage-deliver-desc">Whatever equipment, materials, or supplies a project needs, we handle international trade and logistics to get them where they're needed.</p>
+          <ul class="stage-list">
+            <li data-i18n="stage-deliver-1">Industrial equipment export</li><li data-i18n="stage-deliver-2">Project materials & supplies</li>
+            <li data-i18n="stage-deliver-3">Construction & engineering materials</li><li data-i18n="stage-deliver-4">General commodities trade</li>
+            <li data-i18n="stage-deliver-5">Cross-border procurement</li><li data-i18n="stage-deliver-6">Cross-border logistics</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="products-section" id="products">
+    <div class="products-inner">
+      <div class="section-header reveal">
+        <div class="section-eyebrow" data-i18n="products-eyebrow">Product Catalog</div>
+        <h2><span data-i18n="products-title-1">Spec-grade supply. </span><span class="accent" data-i18n="products-title-2">No intermediaries.</span></h2>
+        <p class="section-sub" data-i18n="products-sub">Direct-source equipment and materials for industrial supply, technical services, and international trade. Technical parameters available on request.</p>
+      </div>
+      <div class="product-tabs">
+        <button class="product-tab active" data-panel="mining" data-i18n="tab-mining">Heavy Equipment</button>
+        <button class="product-tab" data-panel="logistics" data-i18n="tab-logistics">Logistics / Trade</button>
+      </div>
+
+      <div class="product-panel active" id="panel-mining">
+        <div class="product-grid">
+          <div class="product-card" data-detail="uk10">
+            <div class="product-img-wrap"><img src="assets/images/uk10-dump-truck-front.png" alt="UK-10 articulated dump truck"></div>
+            <div class="product-body">
+            <div class="product-cat">DALI · Underground Dump Truck</div>
+            <div class="product-name">UK-10 Articulated Dump Truck<br>10 t · 5 m³</div>
+            <table class="spec-table">
+              <tr><td>Payload</td><td>10,000 kg</td></tr>
+              <tr><td>Bowl Volume</td><td>5 m³ (opt. 6 m³ / 12 t)</td></tr>
+              <tr><td>Engine</td><td>Cummins QSB4.5 — 164 hp</td></tr>
+              <tr><td>Converter / Trans.</td><td>DANA C273 / DANA RT32000</td></tr>
+              <tr><td>Max. Gradeability</td><td>25% (14°)</td></tr>
+              <tr><td>Speed</td><td>4 gear, 0 – 23 km/h</td></tr>
+              <tr><td>Cab</td><td>ROPS / FOPS certified</td></tr>
+              <tr><td>Min. Clearance</td><td>295 mm</td></tr>
+            </table>
+            <p class="product-note">Articulated underground truck for fast, efficient transport in heavy-duty construction and engineering operations.</p>
+            <button class="product-detail-btn" onclick="openDetail('uk10')">View Full Specs →</button>
+            </div>
+          </div>
+          <div class="product-card" data-detail="wk">
+            <div class="product-img-wrap"><img src="assets/images/wk-excavator-collage.png" alt="WK series heavy excavators"></div>
+            <div class="product-body">
+            <div class="product-cat">AVIC · Heavy Excavator Series</div>
+            <div class="product-name">WK Series Rope-Shovel Excavator<br>WK-4 / WK-12 / WK-20 / WK-27 / WK-35 / WK-55</div>
+            <table class="spec-table">
+              <tr><td>Dipper Capacity</td><td>5 → 55 m³ (6 models)</td></tr>
+              <tr><td>Working Weight</td><td>200 → 1,460 t</td></tr>
+              <tr><td>Matched Trucks</td><td>80 → 363 MT haul fleet</td></tr>
+              <tr><td>Productivity</td><td>up to 6,600 m³/h (WK-55)</td></tr>
+              <tr><td>Drive</td><td>Common DC Bus-bar, VFD</td></tr>
+              <tr><td>Supply Voltage</td><td>6,000 V / 10,000 V</td></tr>
+              <tr><td>Max. Digging Radius</td><td>14.3 → 23.9 m</td></tr>
+              <tr><td>Gradeability</td><td>12° – 13°</td></tr>
+            </table>
+            <p class="product-note">Large-scale excavating equipment for heavy-duty engineering and earthmoving operations. Full model line from medium-class to ultra-large.</p>
+            <button class="product-detail-btn" onclick="openDetail('wk')">View Full Specs →</button>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="product-cat">General Equipment Supply</div>
+            <div class="product-name">Drilling Rigs · Drill Bits<br>Crushing &amp; Material Handling</div>
+            <table class="spec-table">
+              <tr><td>Drilling Rigs</td><td>Truck-mounted &amp; man-portable</td></tr>
+              <tr><td>Drill Bits</td><td>Multiple diameters &amp; formations</td></tr>
+              <tr><td>Crushing</td><td>Stationary &amp; mobile plants</td></tr>
+              <tr><td>Material Handling</td><td>Conveyors, feeders, screens</td></tr>
+              <tr><td>Pumps &amp; Valves</td><td>Slurry, dewatering, process</td></tr>
+              <tr><td>Support</td><td>Spare parts &amp; field service</td></tr>
+            </table>
+            <p class="product-note">Specifications available on request — tailored to project type and operational requirements.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-panel" id="panel-logistics">
+        <div class="product-grid">
+          <div class="product-card">
+            <div class="product-cat">Industrial Trading</div>
+            <div class="product-name">Industrial Equipment<br>Export Supply</div>
+            <table class="spec-table">
+              <tr><td>Typical Cu</td><td>Custom specifications per order</td></tr>
+              <tr><td>Origin</td><td>Latin America, Africa, Southeast Asia</td></tr>
+              <tr><td>Key Ports</td><td>Hong Kong, Callao, Durban</td></tr>
+              <tr><td>Trade Term</td><td>CIF / FOB / CFR</td></tr>
+            </table>
+          </div>
+          <div class="product-card">
+            <div class="product-cat">Industrial Trading</div>
+            <div class="product-name">Project Materials &amp; Supplies<br>General Cargo</div>
+            <table class="spec-table">
+              <tr><td>Products</td><td>Construction materials, engineering supplies, industrial goods</td></tr>
+              <tr><td>Origin</td><td>Africa, Southeast Asia</td></tr>
+              <tr><td>Trade Term</td><td>CIF / FOB / CFR</td></tr>
+              <tr><td>Financing</td><td>LC / TT / Credit line</td></tr>
+            </table>
+          </div>
+          
+          <div class="product-card">
+            <div class="product-cat">Logistics</div>
+            <div class="product-name">Freight Forwarding &amp; Port Agency</div>
+            <table class="spec-table">
+              <tr><td>Modes</td><td>Bulk vessel, container, air freight</td></tr>
+              <tr><td>Key Ports</td><td>Hong Kong, Laem Chabang, Haiphong, Callao, Durban</td></tr>
+              <tr><td>Services</td><td>Customs clearance, inspection, warehousing</td></tr>
+              <tr><td>Documents</td><td>B/L, COA, SGS inspection</td></tr>
+            </table>
+          </div>
+          <div class="product-card">
+            <div class="product-cat">Trade Finance</div>
+            <div class="product-name">Structured Trade &amp; Project Finance</div>
+            <table class="spec-table">
+              <tr><td>Instruments</td><td>LC (SBLC, DLC), Deferred Payment</td></tr>
+              <tr><td>Currencies</td><td>USD, EUR, CNY, HKD</td></tr>
+              <tr><td>Coverage</td><td>Latin America, Southeast Asia, Africa</td></tr>
+              <tr><td>Languages</td><td>English · 中文 · Español</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pillars">      </div>
+    </div>
+  </section>
+
+  <section id="pillars">
+    <div class="section-header reveal">
+      <div class="section-eyebrow" data-i18n="pillars-eyebrow">Capabilities</div>
+      <h2><span data-i18n="pillars-title-1">Four pillars. </span><span class="accent" data-i18n="pillars-title-2">One company.</span></h2>
+      <p class="section-sub" data-i18n="pillars-sub">Each capability stands on its own. Together, they let us walk a project from the first drill hole to the last shipment.</p>
+    </div>
+    <div class="pillars-grid">
+      <div class="pillar reveal"><div class="pillar-num">01 / SURVEY</div><h3 class="pillar-title" data-i18n="pillar-1-title">Discover</h3><p class="pillar-desc" data-i18n="pillar-1-desc">Aerial geophysics, remote sensing, geochemistry. The foundational data that supports project planning.</p></div>
+      <div class="pillar reveal"><div class="pillar-num">02 / EQUIP</div><h3 class="pillar-title" data-i18n="pillar-2-title">Operate</h3><p class="pillar-desc" data-i18n="pillar-2-desc">Heavy excavators, dump trucks, drilling rigs, pumps and pipelines. Production-grade hardware for two chains.</p></div>
+      <div class="pillar reveal"><div class="pillar-num">03 / SUPPORT</div><h3 class="pillar-title" data-i18n="pillar-3-title">Support</h3><p class="pillar-desc" data-i18n="pillar-3-desc">Temporary power, monitoring, drones, equipment rental, mobile substations. Infrastructure for remote sites.</p></div>
+      <div class="pillar reveal"><div class="pillar-num">04 / TRADE</div><h3 class="pillar-title" data-i18n="pillar-4-title">Deliver</h3><p class="pillar-desc" data-i18n="pillar-4-desc">Industrial equipment, project materials, and general commodities. International trade that completes the supply cycle.</p></div>
+    </div>
+  </section>
+
+  <section class="map-section" id="map">
+    <div class="section-header reveal">
+      <div class="section-eyebrow" data-i18n="map-eyebrow">Global presence</div>
+      <h2><span data-i18n="map-title-1">Where we've </span><span class="accent" data-i18n="map-title-2">actually been.</span></h2>
+      <p class="section-sub" data-i18n="map-sub">Thirty-plus countries across six continents — Asia, Africa, Latin America, Europe, North America, and Russian-speaking regions. Not a list of where we'd like to work. A list of where we already have.</p>
+    </div>
+    <div class="map-wrapper reveal">
+      <svg class="world-map" viewBox="0 0 1100 500" preserveAspectRatio="xMidYMid meet">
+        <g class="map-grid">
+          <line x1="0" y1="125" x2="1100" y2="125"/><line x1="0" y1="250" x2="1100" y2="250" class="equator"/>
+          <line x1="0" y1="375" x2="1100" y2="375"/><line x1="275" y1="0" x2="275" y2="500"/>
+          <line x1="550" y1="0" x2="550" y2="500" class="meridian"/><line x1="825" y1="0" x2="825" y2="500"/>
+        </g>
+        <g class="map-label-axis">
+          <text x="10" y="121">45°N</text><text x="10" y="246">0°</text><text x="10" y="371">45°S</text>
+          <text x="278" y="495">90°W</text><text x="553" y="495">0°</text><text x="828" y="495">90°E</text>
+        </g>
+        <g>
+          <path class="map-route" d="M 898 215 L 320 250"/><path class="map-route" d="M 898 215 L 310 228"/>
+          <path class="map-route" d="M 898 215 L 863 195"/><path class="map-route" d="M 898 215 L 881 211"/>
+          <path class="map-route" d="M 898 215 L 611 280"/>
+        </g>
+        <g class="map-marker hq"><circle class="ring" cx="898" cy="189" r="11"/><circle class="dot" cx="898" cy="189" r="5"/><text x="898" y="172" text-anchor="middle" data-i18n="map-hq">HONG KONG / HQ</text><text x="898" y="210" text-anchor="middle" class="coord">22.3°N · 114.2°E</text></g>
+        <g class="map-marker active"><circle class="ring" cx="312" cy="255" r="10"/><circle class="dot" cx="312" cy="255" r="4"/><text x="312" y="278" text-anchor="middle">ECUADOR</text><text x="312" y="293" text-anchor="middle" class="coord">1.8°S · 78.2°W</text></g>
+        <g class="map-marker active"><circle class="dot" cx="310" cy="228" r="4"/><text x="310" y="216" text-anchor="middle">COLOMBIA</text></g>
+        <g class="map-marker active"><circle class="dot" cx="863" cy="195" r="4"/><text x="863" y="178" text-anchor="middle">LAOS</text><text x="863" y="163" text-anchor="middle" class="coord">19.9°N · 102.5°E</text></g>
+        <g class="map-marker active"><circle class="dot" cx="881" cy="218" r="4"/><text x="881" y="245" text-anchor="middle">VIETNAM</text></g>
+        <g class="map-marker active"><circle class="dot" cx="611" cy="280" r="4"/><text x="611" y="303" text-anchor="middle" data-i18n="map-africa">AFRICA / 2026+</text></g>
+        <g class="map-marker dim"><circle class="dot" cx="733" cy="97" r="3"/><text x="733" y="85" text-anchor="middle" style="font-size:9px;" data-i18n="map-cis">CIS REGION</text></g>
+        <g class="map-marker dim"><circle class="dot" cx="265" cy="155" r="3"/><text x="265" y="143" text-anchor="middle" style="font-size:9px;" data-i18n="map-na">N. AMERICA</text></g>
+        <g class="map-marker dim"><circle class="dot" cx="568" cy="135" r="3"/><text x="568" y="123" text-anchor="middle" style="font-size:9px;" data-i18n="map-eu">EUROPE</text></g>
+      </svg>
+    </div>
+    <div class="map-legend reveal">
+      <div class="item"><span class="stage-tag" data-i18n="map-tag-discover">DISCOVER</span><strong>Ecuador</strong><span data-i18n="map-ecuador-note">Technical survey project · ongoing through Q4 2026 · multi-year integrated project.</span></div>
+      <div class="item"><span class="stage-tag" data-i18n="map-tag-operate">OPERATE</span><strong>Colombia</strong><span data-i18n="map-colombia-note">Heavy equipment supply, industrial trade and production-line development.</span></div>
+      <div class="item"><span class="stage-tag" data-i18n="map-tag-deliver">DELIVER</span><strong>Laos &amp; Vietnam</strong><span data-i18n="map-sea-note">Industrial goods cross-border trade routed via Laem Chabang &amp; Haiphong.</span></div>
+      <div class="item"><span class="stage-tag" data-i18n="map-tag-next">NEXT</span><strong>Africa</strong><span data-i18n="map-africa-note">Equipment and industrial trade market expansion across selected jurisdictions.</span></div>
+    </div>
+  </section>
+
+  <section class="numbers-section" id="numbers">
+    <div class="section-header reveal">
+      <div class="section-eyebrow" data-i18n="numbers-eyebrow">Track record</div>
+      <h2><span data-i18n="numbers-title-1">The shape of </span><span class="accent" data-i18n="numbers-title-2">twenty years.</span></h2>
+    </div>
+    <div class="numbers-grid reveal">
+      <div class="num-item"><div class="num-big">30<sup>+</sup></div><div class="num-label" data-i18n="num-countries">Countries operated in</div></div>
+      <div class="num-item"><div class="num-big">2</div><div class="num-label" data-i18n="num-chains">Industry chains integrated</div></div>
+      <div class="num-item"><div class="num-big">6</div><div class="num-label" data-i18n="num-continents">Continents reached</div></div>
+      <div class="num-item"><div class="num-big">4</div><div class="num-label" data-i18n="num-stages">Lifecycle stages covered</div></div>
+    </div>
+  </section>
+
+  <section class="footer-cta" id="contact">
+    <div class="footer-cta-inner">
+      <div class="reveal">
+        <div class="section-eyebrow" data-i18n="cta-eyebrow">Let's talk</div>
+        <h2><span data-i18n="cta-title-1">Tell us where you are </span><span class="accent" data-i18n="cta-title-2">in the cycle.</span></h2>
+        <div class="contact-block">
+          <div>
+            <div class="contact-label" data-i18n="contact-email-label">Email</div>
+            <a href="mailto:info@surpbiz.com" class="contact-link">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+              info@surpbiz.com
+            </a>
+          </div>
+          <div>
+            <div class="contact-label" data-i18n="contact-wa-label">WhatsApp</div>
+            <a href="https://wa.me/852524348812" target="_blank" rel="noopener" class="contact-link">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+              +852 5243 4881 2
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="contact-info reveal">
+        <strong data-i18n="contact-serving-label">Serving</strong>
+        <span data-i18n="contact-serving">Latin America · Southeast Asia · Africa</span>
+        <strong data-i18n="contact-langs-label">Languages</strong>
+        <span>English · 中文 · Español</span>
+        <strong data-i18n="contact-inquiry-label">Inquiries</strong>
+        <span data-i18n="contact-inquiry">Heavy equipment · Technical services · International trade · Project logistics</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div data-i18n="footer-copy">© 2026 Surpbiz Limited / From Supply to Delivery</div>
+      <div data-i18n="footer-tagline">Hong Kong / Equipment · Services · Trade</div>
+    </div>
+  </footer>
+
+  <script>
+  const translations={en:{'nav-lifecycle':'Lifecycle','nav-products':'Products','nav-capabilities':'Capabilities','nav-presence':'Presence','nav-contact':'Contact','eyebrow-hero':'Hong Kong · Equipment · Services · Trade · Est. 20+ years','hero-title-1':'From Supply','hero-title-2':'to Trade.','hero-sub':'We connect equipment supply, technical services, and international trade — one partner across the full project lifecycle.','cta-primary':'See how we work','cta-secondary':'Start a project','trust-countries':'Countries delivered to','trust-experience':'Of cross-border trade','trust-chains':'Integrated value chains','trust-stages':'Stages, one partner','clock-discover':'12 · SURVEY','clock-operate':'03 · EQUIP','clock-support':'06 · SUPPORT','clock-deliver':'09 · TRADE','clock-center':'ONE CYCLE','clock-center-2':'↺ 01 → 04','click-prompt':'CLICK A STAGE','showcase-tag-1':'03 · EQUIP','showcase-title-1':'Heavy Equipment','showcase-desc-1':'Excavators, articulated dump trucks, drilling rigs and material-handling systems for heavy-duty construction and engineering operations across Latin America and Southeast Asia.','showcase-tag-2':'01 · SURVEY','showcase-title-2':'Technical Survey Services','showcase-desc-2':'Aerial geophysical surveys, remote sensing, geochemical sampling and data analysis — the foundational data that supports project planning and decision-making.','showcase-tag-3':'09 · TRADE','showcase-title-3':'Logistics & Trade','showcase-desc-3':'International trade of industrial equipment and project materials — via major ports from Hong Kong to Laem Chabang, Haiphong and beyond.','lifecycle-eyebrow':'The Lifecycle Model','lifecycle-title-1':'A cycle, ','lifecycle-title-2':'not a transaction.','stage-discover-num':'12:00 · SURVEY','stage-discover-title':'Map the ground.','stage-discover-desc':'Before ground is broken, we map the terrain. Aerial geophysics, remote sensing, and geochemical surveys — the foundational data that supports project planning and decision-making.','stage-discover-1':'Aerial geophysical surveys','stage-discover-2':'Remote sensing & satellite data','stage-discover-3':'Geochemical sampling','stage-discover-4':'Data analysis & reporting','stage-discover-5':'Terrain mapping','stage-discover-6':'Geological modeling','stage-operate-num':'03:00 · EQUIP','stage-operate-title':'Build and supply.','stage-operate-desc':'We supply the heavy equipment and on-site services that turn project plans into productive operations — from excavation to material handling.','stage-operate-1':'Heavy equipment supply','stage-operate-2':'Excavators & dump trucks','stage-operate-3':'Drilling rigs & accessories','stage-operate-4':'Crushing & material handling','stage-operate-5':'Pumps, pipes & fittings','stage-operate-6':'On-site technical services','stage-support-num':'06:00 · SUPPORT','stage-support-title':'Keep it running.','stage-support-desc':'Remote operations require reliable infrastructure — power, monitoring, mobility — that keeps projects productive across multi-year deployments.','stage-support-1':'Temporary solar power','stage-support-2':'Mobile substations & power supply','stage-support-3':'Drone & remote monitoring','stage-support-4':'Equipment rental','stage-support-5':'Site security systems','stage-support-6':'Logistics & camp setup','stage-deliver-num':'09:00 · TRADE','stage-deliver-title':'Trade the world.','stage-deliver-desc':'Whatever equipment, materials, or supplies a project needs, we handle international trade and logistics to get them where they\'re needed.','stage-deliver-1':'Industrial equipment export','stage-deliver-2':'Project materials & supplies','stage-deliver-3':'Construction & engineering materials','stage-deliver-4':'General commodities trade','stage-deliver-5':'Cross-border procurement','stage-deliver-6':'Cross-border logistics','products-eyebrow':'Product Catalog','products-title-1':'Spec-grade supply. ','products-title-2':'No intermediaries.','products-sub':'Direct-source equipment and materials for industrial supply, technical services, and international trade. Technical parameters available on request.','tab-mining':'Heavy Equipment','tab-logistics':'Logistics / Trade','pillars-eyebrow':'Capabilities','pillars-title-1':'Four pillars. ','pillars-title-2':'One company.','pillars-sub':'Each capability stands on its own. Together, they let us walk a project from the first drill hole to the last shipment.','pillar-1-title':'Survey','pillar-1-desc':'Aerial geophysics, remote sensing, geochemistry. The foundational data that supports project planning.','pillar-2-title':'Equip','pillar-2-desc':'Heavy excavators, dump trucks, drilling rigs, pumps and pipelines. Production-grade hardware for two chains.','pillar-3-title':'Support','pillar-3-desc':'Temporary power, monitoring, drones, equipment rental, mobile substations. Infrastructure for remote sites.','pillar-4-title':'Trade','pillar-4-desc':'Industrial equipment, project materials, and general commodities. International trade that completes the supply cycle.','map-eyebrow':'Global presence','map-title-1':'Where we\'ve ','map-title-2':'actually been.','map-sub':'Thirty-plus countries across six continents — Asia, Africa, Latin America, Europe, North America, and Russian-speaking regions. Not a list of where we\'d like to work. A list of where we already have.','map-hq':'HONG KONG / HQ','map-africa':'AFRICA / 2026+','map-cis':'CIS REGION','map-na':'N. AMERICA','map-eu':'EUROPE','map-tag-discover':'SURVEY','map-tag-operate':'EQUIP','map-tag-deliver':'TRADE','map-tag-next':'NEXT','map-ecuador-note':'Technical survey project · ongoing through Q4 2026 · multi-year integrated project.','map-colombia-note':'Heavy equipment supply, industrial trade and production-line development.','map-sea-note':'Industrial goods cross-border trade routed via Laem Chabang & Haiphong.','map-africa-note':'Equipment and industrial trade market expansion across selected jurisdictions.','numbers-eyebrow':'Track record','numbers-title-1':'The shape of ','numbers-title-2':'twenty years.','num-countries':'Countries operated in','num-chains':'Industry chains integrated','num-continents':'Continents reached','num-stages':'Lifecycle stages covered','cta-eyebrow':'Let\'s talk','cta-title-1':'Tell us where you are ','cta-title-2':'in the cycle.','contact-email-label':'Email','contact-wa-label':'WhatsApp','contact-serving-label':'Serving','contact-serving':'Latin America · Southeast Asia · Africa','contact-langs-label':'Languages','contact-inquiry-label':'Inquiries','contact-inquiry':'Heavy equipment · Technical services · International trade · Project logistics','footer-copy':'© 2026 Surpbiz Limited / From Supply to Trade','footer-tagline':'Hong Kong / Equipment · Services · Trade','active-stage-name':'Survey'},zh:{'nav-lifecycle':'生命周期','nav-products':'产品','nav-capabilities':'能力','nav-presence':'覆盖','nav-contact':'联系','eyebrow-hero':'香港 · 设备 · 服务 · 贸易 · 20余年','hero-title-1':'从供应','hero-title-2':'到贸易。','hero-sub':'我们连接设备供应、技术服务与国际贸易——一个伙伴，覆盖项目全生命周期。','cta-primary':'了解我们的方式','cta-secondary':'启动项目','trust-countries':'交付国家','trust-experience':'跨境贸易经验','trust-chains':'一体化产业链','trust-stages':'全周期，一个伙伴','clock-discover':'12 · 勘测','clock-operate':'03 · 装备','clock-support':'06 · 配套','clock-deliver':'09 · 贸易','clock-center':'一个周期','clock-center-2':'↺ 01 → 04','click-prompt':'点击阶段','showcase-tag-1':'03 · 装备','showcase-title-1':'重型机械','showcase-desc-1':'挖掘机、铰接式自卸车、钻机及物料搬运系统，服务于拉丁美洲与东南亚的重型工程与施工作业。','showcase-tag-2':'01 · 勘测','showcase-title-2':'技术勘测服务','showcase-desc-2':'航空地球物理勘测、遥感、地球化学采样与数据分析——支持项目规划与决策的基础数据。','showcase-tag-3':'09 · 贸易','showcase-title-3':'物流与贸易','showcase-desc-3':'工业设备与项目物资国际贸易——经香港、林查班港、海防港等主要港口发运。','lifecycle-eyebrow':'生命周期模型','lifecycle-title-1':'一个周期，','lifecycle-title-2':'而非一锤子买卖。','stage-discover-num':'12:00 · 勘测','stage-discover-title':'测绘地形。','stage-discover-desc':'在动工之前，我们先测绘地形。航空地球物理、遥感与地球化学勘测——这些基础数据支持项目规划与决策。','stage-discover-1':'航空地球物理勘测','stage-discover-2':'遥感与卫星数据','stage-discover-3':'地球化学采样','stage-discover-4':'数据分析与报告','stage-discover-5':'地形测绘','stage-discover-6':'地质建模','stage-operate-num':'03:00 · 装备','stage-operate-title':'建设与供应。','stage-operate-desc':'我们提供重型设备及现场服务，把项目计划变成高效运转的生产作业——从挖掘到物料搬运。','stage-operate-1':'重型机械供应','stage-operate-2':'挖掘机与自卸车','stage-operate-3':'钻机及配件','stage-operate-4':'破碎与物料搬运','stage-operate-5':'泵、管道及管件','stage-operate-6':'现场技术服务','stage-support-num':'06:00 · 配套','stage-support-title':'保障运转。','stage-support-desc':'偏远作业需要可靠的基础设施——电力、监控、机动性——保障项目在多年周期中持续运转。','stage-support-1':'临时太阳能供电','stage-support-2':'移动变电站与供电系统','stage-support-3':'无人机与远程监控','stage-support-4':'设备租赁','stage-support-5':'现场安防系统','stage-support-6':'物流与营地建设','stage-deliver-num':'09:00 · 贸易','stage-deliver-title':'贸易全球。','stage-deliver-desc':'无论设备、材料还是物资，项目需要什么，我们就通过国际贸易与物流送到哪里。','stage-deliver-1':'工业设备出口','stage-deliver-2':'项目物资与供应','stage-deliver-3':'建材与工程材料','stage-deliver-4':'一般商品贸易','stage-deliver-5':'跨境采购','stage-deliver-6':'跨境物流','products-eyebrow':'产品目录','products-title-1':'规格级供应。','products-title-2':'无中间商。','products-sub':'直供工业供应、技术服务及国际贸易的设备与材料。技术参数可应要求提供。','tab-mining':'重型机械','tab-logistics':'贸易 / 物流','pillars-eyebrow':'核心能力','pillars-title-1':'四大支柱。','pillars-title-2':'一家公司。','pillars-sub':'每项能力都可独立成立。合在一起，让我们能陪一个项目从第一个钻孔走到最后一船发货。','pillar-1-title':'勘测','pillar-1-desc':'航空地球物理、遥感、地球化学。支持项目规划的基础数据。','pillar-2-title':'装备','pillar-2-desc':'重型挖掘机、自卸车、钻机、泵与管道。两条产业链的生产级硬件。','pillar-3-title':'配套','pillar-3-desc':'临时供电、监控、无人机、设备租赁、移动变电站。偏远作业区的基础设施。','pillar-4-title':'贸易','pillar-4-desc':'工业设备、项目物资与一般商品。完成供应链闭环的国际贸易。','map-eyebrow':'全球覆盖','map-title-1':'我们真正','map-title-2':'到过的地方。','map-sub':'三十多个国家，横跨六大洲——亚洲、非洲、拉丁美洲、欧洲、北美及俄语区。不是我们想去哪里的清单，而是我们已经在哪里干过的清单。','map-hq':'香港 / 总部','map-africa':'非洲 / 2026+','map-cis':'独联体','map-na':'北美','map-eu':'欧洲','map-tag-discover':'勘测','map-tag-operate':'装备','map-tag-deliver':'贸易','map-tag-next':'下一步','map-ecuador-note':'技术勘测项目 · 持续至 2026 年第四季度 · 多年度综合项目。','map-colombia-note':'重型机械供应、工业贸易及产线开发。','map-sea-note':'工业品跨境贸易，经林查班港与海防港转运。','map-africa-note':'在选定司法管辖区拓展设备与工业贸易市场。','numbers-eyebrow':'业绩记录','numbers-title-1':'二十年的','numbers-title-2':'轮廓。','num-countries':'运营过的国家','num-chains':'一体化产业链','num-continents':'覆盖大洲','num-stages':'生命周期阶段','cta-eyebrow':'聊聊吧','cta-title-1':'告诉我们你处在','cta-title-2':'周期的哪一环。','contact-email-label':'邮箱','contact-wa-label':'WhatsApp','contact-serving-label':'服务区域','contact-serving':'拉丁美洲 · 东南亚 · 非洲','contact-langs-label':'语言','contact-inquiry-label':'业务咨询','contact-inquiry':'重型机械 · 技术服务 · 国际贸易 · 项目物流','footer-copy':'© 2026 Surpbiz Limited / From Supply to Trade','footer-tagline':'香港 / 设备 · 服务 · 贸易','active-stage-name':'勘测'},es:{'nav-lifecycle':'Ciclo de vida','nav-products':'Productos','nav-capabilities':'Capacidades','nav-presence':'Presencia','nav-contact':'Contacto','eyebrow-hero':'Hong Kong · Equipos · Servicios · Comercio · +20 años','hero-title-1':'Del Suministro','hero-title-2':'al Comercio.','hero-sub':'Conectamos el suministro de equipos, los servicios técnicos y el comercio internacional — un socio a lo largo de todo el ciclo del proyecto.','cta-primary':'Cómo trabajamos','cta-secondary':'Iniciar un proyecto','trust-countries':'Países de entrega','trust-experience':'De comercio transfronterizo','trust-chains':'Cadenas de valor integradas','trust-stages':'Etapas, un socio','clock-discover':'12 · MEDICIÓN','clock-operate':'03 · EQUIPAR','clock-support':'06 · SOPORTE','clock-deliver':'09 · COMERCIO','clock-center':'UN CICLO','clock-center-2':'↺ 01 → 04','click-prompt':'CLIC EN UNA ETAPA','showcase-tag-1':'03 · EQUIPAR','showcase-title-1':'Equipos Pesados','showcase-desc-1':'Excavadoras, volquetas articuladas, perforadoras y sistemas de manejo de materiales para operaciones de construcción pesada e ingeniería en América Latina y el Sudeste Asiático.','showcase-tag-2':'01 · MEDICIÓN','showcase-title-2':'Servicios Técnicos de Medición','showcase-desc-2':'Estudios geofísicos aéreos, teledetección, muestreo geoquímico y análisis de datos — los datos fundamentales que respaldan la planificación y toma de decisiones del proyecto.','showcase-tag-3':'09 · COMERCIO','showcase-title-3':'Logística y Comercio','showcase-desc-3':'Comercio internacional de equipos industriales y materiales de proyecto — vía puertos principales desde Hong Kong hasta Laem Chabang y Haiphong.','lifecycle-eyebrow':'El Modelo de Ciclo de Vida','lifecycle-title-1':'Un ciclo, ','lifecycle-title-2':'no una transacción.','stage-discover-num':'12:00 · MEDICIÓN','stage-discover-title':'Mapear el terreno.','stage-discover-desc':'Antes de comenzar las obras, mapeamos el terreno. Geofísica aérea, teledetección y estudios geoquímicos — los datos fundamentales que respaldan la planificación y toma de decisiones del proyecto.','stage-discover-1':'Estudios geofísicos aéreos','stage-discover-2':'Teledetección y datos satelitales','stage-discover-3':'Muestreo geoquímico','stage-discover-4':'Análisis de datos e informes','stage-discover-5':'Mapeo topográfico','stage-discover-6':'Modelamiento geológico','stage-operate-num':'03:00 · EQUIPAR','stage-operate-title':'Construir y suministrar.','stage-operate-desc':'Suministramos los equipos pesados y servicios en sitio que convierten los planes del proyecto en operaciones productivas — desde excavación hasta manejo de materiales.','stage-operate-1':'Suministro de equipos pesados','stage-operate-2':'Excavadoras y volquetes','stage-operate-3':'Perforadoras y accesorios','stage-operate-4':'Trituración y manejo de materiales','stage-operate-5':'Bombas, tuberías y conexiones','stage-operate-6':'Servicios técnicos en sitio','stage-support-num':'06:00 · SOPORTE','stage-support-title':'Mantenerlo en marcha.','stage-support-desc':'Las operaciones remotas requieren infraestructura confiable — energía, monitoreo, movilidad — que mantiene la productividad de los proyectos a lo largo de despliegues plurianuales.','stage-support-1':'Energía solar temporal','stage-support-2':'Subestaciones móviles y suministro de energía','stage-support-3':'Drones y monitoreo remoto','stage-support-4':'Alquiler de equipos','stage-support-5':'Sistemas de seguridad en sitio','stage-support-6':'Logística y campamento','stage-deliver-num':'09:00 · COMERCIO','stage-deliver-title':'Comerciar con el mundo.','stage-deliver-desc':'Sea equipamiento, materiales o insumos, lo que el proyecto necesite, nosotros gestionamos el comercio internacional y la logística para llevarlo a donde se necesita.','stage-deliver-1':'Exportación de equipos industriales','stage-deliver-2':'Materiales y suministros de proyecto','stage-deliver-3':'Materiales de construcción e ingeniería','stage-deliver-4':'Comercio de bienes generales','stage-deliver-5':'Adquisición transfronteriza','stage-deliver-6':'Logística transfronteriza','products-eyebrow':'Catálogo de Productos','products-title-1':'Suministro de calidad técnica. ','products-title-2':'Sin intermediarios.','products-sub':'Equipos y materiales de fuente directa para suministro industrial, servicios técnicos y comercio internacional. Parámetros técnicos disponibles bajo solicitud.','tab-mining':'Equipos Pesados','tab-logistics':'Logística / Comercio','pillars-eyebrow':'Capacidades','pillars-title-1':'Cuatro pilares. ','pillars-title-2':'Una empresa.','pillars-sub':'Cada capacidad se sostiene por sí sola. Juntas, nos permiten acompañar un proyecto desde el primer suministro hasta el último embarque.','pillar-1-title':'Medición','pillar-1-desc':'Geofísica aérea, teledetección, geoquímica. Los datos fundamentales que respaldan la planificación del proyecto.','pillar-2-title':'Equipar','pillar-2-desc':'Excavadoras pesadas, volquetes, perforadoras, bombas y tuberías. Hardware de grado de producción para dos cadenas.','pillar-3-title':'Soporte','pillar-3-desc':'Energía eléctrica temporal, monitoreo, drones, alquiler de equipos, subestaciones móviles. Infraestructura para sitios remotos.','pillar-4-title':'Comerciar','pillar-4-desc':'Equipos industriales, materiales de proyecto y bienes generales. Comercio internacional que completa el ciclo de suministro.','map-eyebrow':'Presencia global','map-title-1':'Dónde realmente ','map-title-2':'hemos estado.','map-sub':'Más de treinta países en seis continentes — Asia, África, América Latina, Europa, América del Norte y regiones de habla rusa. No es una lista de dónde nos gustaría trabajar. Es una lista de dónde ya hemos trabajado.','map-hq':'HONG KONG / SEDE','map-africa':'ÁFRICA / 2026+','map-cis':'REGIÓN CEI','map-na':'N. AMÉRICA','map-eu':'EUROPA','map-tag-discover':'MEDICIÓN','map-tag-operate':'EQUIPAR','map-tag-deliver':'COMERCIO','map-tag-next':'SIGUIENTE','map-ecuador-note':'Proyecto de medición técnica · en curso hasta Q4 2026 · proyecto integrado plurianual.','map-colombia-note':'Suministro de equipos pesados, comercio industrial y desarrollo de líneas de producción.','map-sea-note':'Comercio transfronterizo de bienes industriales vía Laem Chabang y Haiphong.','map-africa-note':'Expansión de mercado de equipos y comercio industrial en jurisdicciones seleccionadas.','numbers-eyebrow':'Historial','numbers-title-1':'La forma de ','numbers-title-2':'veinte años.','num-countries':'Países de operación','num-chains':'Cadenas industriales integradas','num-continents':'Continentes alcanzados','num-stages':'Etapas del ciclo cubiertas','cta-eyebrow':'Hablemos','cta-title-1':'Cuéntanos en qué etapa ','cta-title-2':'del ciclo estás.','contact-email-label':'Correo','contact-wa-label':'WhatsApp','contact-serving-label':'Servimos a','contact-serving':'América Latina · Sudeste Asiático · África','contact-langs-label':'Idiomas','contact-inquiry-label':'Consultas','contact-inquiry':'Equipos pesados · Servicios técnicos · Comercio internacional · Logística de proyectos','footer-copy':'© 2026 Surpbiz Limited / From Supply to Trade','footer-tagline':'Hong Kong / Equipos · Servicios · Comercio','active-stage-name':'Medición'}}
+  </script>
+  <script>
+  // Minimal interactive JS for v2 (original v1 prototype lacked this)
+  document.addEventListener('DOMContentLoaded',function(){
+    var t=translations;
+    // --- Reveal on scroll ---
+    var reveals=document.querySelectorAll('.reveal');
+    function showReveals(){
+      reveals.forEach(function(el){
+        var r=el.getBoundingClientRect();
+        if(r.top<window.innerHeight*0.92&&r.bottom>0){el.classList.add('in');}
+      });
+    }
+    window.addEventListener('scroll',showReveals,{passive:true});
+    showReveals();
+
+    // --- Language switching ---
+    function applyLang(lang){
+      if(!t[lang])return;
+      Object.keys(t[lang]).forEach(function(key){
+        var els=document.querySelectorAll('[data-i18n="'+key+'"]');
+        els.forEach(function(el){el.innerHTML=t[lang][key];});
+      });
+      document.querySelectorAll('.lang-switcher button').forEach(function(b){
+        b.classList.toggle('active',b.dataset.lang===lang);
+      });
+    }
+    document.querySelectorAll('.lang-switcher button').forEach(function(b){
+      b.addEventListener('click',function(){applyLang(b.dataset.lang);});
+    });
+
+    // --- Lifecycle clock stage switching ---
+    var stageDetails=document.querySelectorAll('.stage-detail');
+    var clockPositions=document.querySelectorAll('#detail-clock .clock-pos');
+    var activeIndicator=document.getElementById('active-indicator');
+    var activeStageName=document.getElementById('active-stage-name');
+    var positions={discover:{cx:200,cy:40},operate:{cx:360,cy:200},support:{cx:200,cy:360},deliver:{cx:40,cy:200}};
+    function activateStage(stage){
+      clockPositions.forEach(function(p){p.classList.toggle('active',p.dataset.stage===stage);});
+      stageDetails.forEach(function(d){d.classList.toggle('active',d.dataset.stage===stage);});
+      if(activeIndicator&&positions[stage]){activeIndicator.setAttribute('cx',positions[stage].cx);activeIndicator.setAttribute('cy',positions[stage].cy);}
+      if(activeStageName){var curLang=document.querySelector('.lang-switcher button.active');var lang=curLang?curLang.dataset.lang:'en';if(t[lang]&&t[lang]['active-stage-name']){activeStageName.textContent=t[lang]['active-stage-name'];}else{activeStageName.textContent=stage.charAt(0).toUpperCase()+stage.slice(1);}}
+    }
+    clockPositions.forEach(function(p){p.addEventListener('click',function(){activateStage(p.dataset.stage);});});
+
+    // --- Product tabs ---
+    var tabs=document.querySelectorAll('.product-tab');
+    var panels=document.querySelectorAll('.product-panel');
+    tabs.forEach(function(tab){
+      tab.addEventListener('click',function(){
+        tabs.forEach(function(t2){t2.classList.remove('active');});
+        panels.forEach(function(p){p.classList.remove('active');});
+        tab.classList.add('active');
+        var panel=document.getElementById('panel-'+tab.dataset.panel);
+        if(panel){panel.classList.add('active');}
+      });
+    });
+  });
+
+  // --- Product detail overlay (pseudo multi-page) ---
+  var productDetails = {
+    uk10: {
+      cat: 'DALI · Underground Dump Truck',
+      title: 'UK-10 Articulated Dump Truck',
+      desc: 'A 10-tonne articulated underground dump truck designed for fast, efficient transport in heavy-duty construction and engineering operations. Cummins power, DANA drivetrain, ROPS/FOPS certified cab.',
+      img: 'assets/images/uk10-dump-truck-rear.png',
+      extraImgs: ['assets/images/uk10-dump-truck-front.png'],
+      specs: [
+        ['Payload','10,000 kg'],['Bowl Volume','5 m³ (optional 6 m³ / 12 t)'],
+        ['Engine','Cummins QSB4.5 diesel — 164 hp @ 2200 rpm'],
+        ['Cylinders','Inline 4, 4-stroke, direct injection, water-cooled'],
+        ['Converter','DANA C273'],['Transmission','DANA RT32000 series, 4-speed'],
+        ['Axles','METEOR CY-2JF/R rigid planetary, ±8° oscillation'],
+        ['Tires','ADVANCE 14.00-24 PR36 L-5S TT'],
+        ['Max. Tractive Force','143 kN'],['Max. Gradeability','25% (14°)'],
+        ['Speed Range','0–23 km/h (4 gears)'],
+        ['Overall Dimensions','7,575 × 1,900 × 2,315 mm (L×W×H)'],
+        ['Dump Height','4,240 mm'],['Wheelbase','4,170 mm'],
+        ['Min. Ground Clearance','295 mm'],['Turning Radius','4,585 / 7,135 mm'],
+        ['Operating Weight (empty)','13,500 kg'],['Loaded Weight','23,500 kg'],
+        ['Cab','ROPS/FOPS certified, spring seat with seatbelt'],
+        ['Sound Level','ISO 6395/6396 compliant'],
+        ['Steering','Full hydraulic power steering, dual double-acting cylinders'],
+        ['Brake','Multi-disc hydraulic (LCB), dual circuit, emergency/parking'],
+        ['Electrical','24V system, 80A alternator, heavy-duty starter'],
+        ['Options','ANSUL fire suppression, auto-lubrication, A/C + heater'],
+        ['Standards','GB/T 35195-2017, JB/T 8436, GB 21500'],
+        ['Operating Temp.','−25°C to +45°C'],['Altitude','−1,500 to +5,000 m'],
+      ]
+    },
+    wk: {
+      cat: 'AVIC International · Heavy Excavator Series',
+      title: 'WK Series Rope-Shovel Excavators',
+      desc: 'Large-scale electric excavators for heavy-duty engineering and earthmoving operations. Six models from the 200-tonne WK-4 to the 1,460-tonne WK-55. Common DC bus-bar drive with VFD, gear-rack crowding mechanism, matched to haul-truck fleets from 80 to 363 tonnes.',
+      img: 'assets/images/wk-excavator-collage.png',
+      extraImgs: [],
+      specs: [
+        ['Model Line','WK-4 · WK-12 · WK-20 · WK-27 · WK-35 · WK-55'],
+        ['Bucket Capacity','5 m³ (WK-4) → 55 m³ (WK-55)'],
+        ['Bucket Range','WK-4: 4–6 · WK-12: 8–16 · WK-20: 16–34 · WK-27: 23–46 · WK-35: 25–54 · WK-55: 36–76 m³'],
+        ['Working Weight','200 t (WK-4) → ~1,460 t (WK-55)'],
+        ['Matched Haul Trucks','80 MT (WK-4) → 363 MT (WK-55)'],
+        ['Theoretical Productivity','up to 6,600 m³/h (WK-55)'],
+        ['Max. Lifting Speed','0.885 m/s (WK-4) → 1.60 m/s (WK-35/55)'],
+        ['Max. Crowding Speed','0.53 – 0.75 m/s'],
+        ['Max. Hoist Force','450 kN (WK-4) → 2,890 kN (WK-55)'],
+        ['Max. Gradeability','12° – 13°'],
+        ['Working Cycle Time','25 – 30 s (=90°)'],
+        ['Ground Pressure','226 – 425 kPa'],
+        ['Drive System','Common DC Bus-bar, AC IGBT, variable frequency'],
+        ['Supply Voltage','6,000 V or 10,000 V (3-phase, 50 Hz)'],
+        ['Boom Length','10.5 m (WK-4) → 20.17 m (WK-55)'],
+        ['Max. Digging Radius','14.3 m (WK-4) → ~24 m (WK-55)'],
+        ['Counterweight','43 t (WK-4) → ~228 t (WK-55)'],
+        ['Power Transformer (min.)','400 kVA (WK-4) → 3,750 kVA (WK-55)'],
+      ]
+    }
+  };
+
+  function openDetail(id){
+    var d = productDetails[id];
+    if(!d) return;
+    var content = document.getElementById('detail-content');
+    var h = '';
+    h += '<img class="detail-hero-img" src="'+d.img+'" alt="'+d.title+'">';
+    h += '<div class="detail-cat">'+d.cat+'</div>';
+    h += '<h1 class="detail-title">'+d.title+'</h1>';
+    h += '<p class="detail-desc">'+d.desc+'</p>';
+    h += '<div class="detail-specs-label">Technical Specifications</div>';
+    h += '<table class="detail-spec-table">';
+    d.specs.forEach(function(s){ h += '<tr><td>'+s[0]+'</td><td>'+s[1]+'</td></tr>'; });
+    h += '</table>';
+    if(d.extraImgs && d.extraImgs.length){
+      h += '<div class="detail-extra-img">';
+      d.extraImgs.forEach(function(src){ h += '<img src="'+src+'" alt="'+d.title+' additional view">'; });
+      h += '</div>';
+    }
+    content.innerHTML = h;
+    document.getElementById('detail-overlay').classList.add('active');
+    document.body.style.overflow='hidden';
+    window.scrollTo(0,0);
+  }
+  function closeDetail(){
+    document.getElementById('detail-overlay').classList.remove('active');
+    document.body.style.overflow='';
+  }
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape') closeDetail();
+  });
+  </script>
+
+  <!-- DETAIL OVERLAY -->
+  <div class="detail-overlay" id="detail-overlay">
+    <div class="detail-header">
+      <button class="detail-back" onclick="closeDetail()">← Back to Catalog</button>
+      <span class="detail-breadcrumb" id="detail-breadcrumb">Products / Mining Equipment</span>
+    </div>
+    <div class="detail-content" id="detail-content">
+      <!-- Filled dynamically by JS -->
+    </div>
+  </div>
+
+</body>
+</html>
